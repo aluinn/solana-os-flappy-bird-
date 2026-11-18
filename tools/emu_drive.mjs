@@ -108,13 +108,18 @@ async function press(key, hold = 60) {
 }
 
 async function shot(path, what) {
-  const sel = what === "badge" ? `canvas` : `canvas`;
+  // "screen" = the 320x218 LCD canvas; "badge" = the whole drawn badge board
+  const sel = what === "badge" ? `svg[aria-label^="Solana OS emulator"]` : `canvas`;
   const r = await evalJs(`(() => {
-    const c = document.querySelector('${sel}'); const b = c.getBoundingClientRect();
-    const box = ${what === "badge" ? "true" : "false"} ? (c.closest('figure,section,div') || c).getBoundingClientRect() : b;
-    return { x: box.x + scrollX, y: box.y + scrollY, width: box.width, height: box.height };
+    const b = document.querySelector('${sel}').getBoundingClientRect();
+    return { x: b.x + scrollX, y: b.y + scrollY, width: b.width, height: b.height };
   })()`);
+  // For the board shot, hide the rest of the page (nav text bleeds in at the edges)
+  if (what === "badge") await evalJs(`(() => { const st = document.createElement('style'); st.id = 'emu-drive-hide';
+    st.textContent = '* { visibility: hidden !important } svg[aria-label^="Solana OS emulator"], svg[aria-label^="Solana OS emulator"] *, canvas { visibility: visible !important }';
+    document.head.appendChild(st); })()`);
   const { data } = await cdp("Page.captureScreenshot", { format: "png", clip: { ...r, scale: 1 }, captureBeyondViewport: true });
+  if (what === "badge") await evalJs(`document.getElementById('emu-drive-hide').remove()`);
   mkdirSync(dirname(path), { recursive: true });
   writeFileSync(path, Buffer.from(data, "base64"));
   console.log("saved", path, `${Math.round(r.width)}x${Math.round(r.height)}`);
