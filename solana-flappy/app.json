@@ -1,0 +1,11 @@
+{
+  "id": "solana-flappy",
+  "name": "Solana Flappy",
+  "version": "0.1.0",
+  "author": "@aluinn",
+  "summary": "Flappy Bird with the Solana coin as the bird.",
+  "icon": "play",
+  "accent": "14F195",
+  "category": "games",
+  "permissions": ["led"]
+}
