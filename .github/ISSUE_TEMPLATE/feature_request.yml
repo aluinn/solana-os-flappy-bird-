@@ -1,0 +1,27 @@
+name: Feature request
+description: Suggest an improvement or a new idea
+title: "[Feature] "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What would you like, and why?
+      description: Describe the idea and what it adds for a player or a developer.
+    validations:
+      required: true
+  - type: textarea
+    id: api
+    attributes:
+      label: Does the Solana OS Lua API support it?
+      description: Link the part of the [Lua API reference](https://github.com/solana-foundation/solana-os/blob/main/docs/LUA_API.md) it would use, or say you're not sure. Sound, for example, has no API.
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives you considered
+  - type: checkboxes
+    id: help
+    attributes:
+      label: Contributing
+      options:
+        - label: I'd like to work on this myself

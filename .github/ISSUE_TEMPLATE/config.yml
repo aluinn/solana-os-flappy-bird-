@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security problem privately
+    url: https://github.com/aluinn/solana-os-flappy-bird-/security/advisories/new
+    about: Please don't file vulnerabilities as public issues.
+  - name: Problem with Solana OS or the badge itself
+    url: https://github.com/solana-foundation/solana-os/issues
+    about: Firmware, the Lua host and the emulator are maintained by the Solana Foundation, not here.

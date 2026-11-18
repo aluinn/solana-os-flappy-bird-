@@ -1,0 +1,51 @@
+name: Bug report
+description: Something in Solana Flappy doesn't work as expected
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the report. For a security problem, don't file it here: use [private reporting](https://github.com/aluinn/solana-os-flappy-bird-/security/advisories/new).
+  - type: dropdown
+    id: where
+    attributes:
+      label: Where did you run it?
+      options:
+        - Hosted emulator
+        - Real badge
+        - Somewhere else (say where below)
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Solana OS version and app version
+      description: On a badge, see Settings. The app version is in `solana-flappy/app.json`, or give the commit.
+      placeholder: "Solana OS 2.1.0, app 0.1.0"
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What did you see, and what did you expect instead?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open the app
+        2. Press SELECT ...
+    validations:
+      required: true
+  - type: textarea
+    id: console
+    attributes:
+      label: Console output or error message
+      description: In the emulator, open the Console panel. On a badge, the error appears on screen with a line number.
+      render: text
+  - type: textarea
+    id: extra
+    attributes:
+      label: Screenshots or anything else
