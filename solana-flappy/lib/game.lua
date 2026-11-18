@@ -15,6 +15,7 @@ M.PLAY_H = 190          -- y of the ground's top edge
 -- Bird
 M.BIRD_X = 72           -- centre x, fixed
 M.BIRD_R = 9            -- collision radius (the sprite is 24 x 24, a little forgiving)
+M.READY_Y = 150         -- where the bird waits on the title screen (below the title card)
 M.GRAVITY = 1100        -- px/s^2
 M.FLAP_V = -280         -- px/s, set (not added) on each flap
 M.MAX_FALL = 420        -- px/s terminal velocity
@@ -39,7 +40,7 @@ function M.new(rand)
   local s = {
     rand = rand or math.random,
     phase = "ready",
-    y = M.PLAY_H // 2, vy = 0,
+    y = M.READY_Y, vy = 0,
     score = 0,
     acc = 0,            -- ms carried between ticks
     dead_ms = 0,        -- time since dying
@@ -61,7 +62,7 @@ end
 -- Back to the title screen, ready for a new run.
 function M.reset(s)
   s.phase = "ready"
-  s.y, s.vy = M.PLAY_H // 2, 0
+  s.y, s.vy = M.READY_Y, 0
   s.score, s.acc, s.dead_ms = 0, 0, 0
   for i = 1, M.NPIPES do
     place(s, s.pipes[i], M.W + 60 + (i - 1) * M.SPACING)

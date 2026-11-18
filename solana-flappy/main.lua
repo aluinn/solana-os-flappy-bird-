@@ -48,11 +48,11 @@ end
 local score_lbl = ui.label(0, 8, "0", {size = 32, w = W, align = "center", color = 0xFFFFFF})
 
 -- Title and game-over overlays (made last so they sit on top)
-local panel = ui.rect(60, 40, 200, 110, {color = 0x1B1631, radius = 8, border = COL_PIPE})
-local head  = ui.label(60, 50, "Solana Flappy", {size = 20, w = 200, align = "center", color = COL_GROUND})
-local line1 = ui.label(60, 86, "", {size = 14, w = 200, align = "center", color = 0xFFFFFF})
-local line2 = ui.label(60, 108, "", {size = 14, w = 200, align = "center", color = "dim"})
-local line3 = ui.label(60, 128, "", {size = 14, w = 200, align = "center", color = 0xFFFFFF})
+local panel = ui.rect(60, 26, 200, 100, {color = 0x1B1631, radius = 8, border = COL_PIPE})
+local head  = ui.label(60, 34, "Solana Flappy", {size = 20, w = 200, align = "center", color = COL_GROUND})
+local line1 = ui.label(60, 66, "", {size = 14, w = 200, align = "center", color = 0xFFFFFF})
+local line2 = ui.label(60, 86, "", {size = 14, w = 200, align = "center", color = "dim"})
+local line3 = ui.label(60, 104, "", {size = 14, w = 200, align = "center", color = 0xFFFFFF})
 
 ui.hint("SELECT flap   CANCEL exit")
 
@@ -115,6 +115,7 @@ local function draw(ms)
 
   if s.phase ~= last_phase then
     last_phase = s.phase
+    score_lbl:show(s.phase == "play")   -- the panels show the score themselves
     if s.phase == "play" then overlay(false)
     elseif s.phase == "ready" then show_title()
     else show_game_over() end
