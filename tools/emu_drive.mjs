@@ -14,6 +14,7 @@
 //   {"text": 800}                       print the last N chars of the console log
 //   {"eval": "document.title"}          run JS in the page and print the result
 // The app in ./solana-flappy is installed first unless NO_INSTALL=1.
+// HEADED=1 node tools/emu_drive.mjs <(echo '[]')   opens a visible window to play in.
 
 import { spawn } from "node:child_process";
 import { readFileSync, readdirSync, statSync, writeFileSync, mkdirSync } from "node:fs";
@@ -27,8 +28,9 @@ const APP_ID = JSON.parse(readFileSync(join(APP_DIR, "app.json"), "utf8")).id;
 const PORT = 9300 + Math.floor(Math.random() * 500);
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
+const HEADED = !!process.env.HEADED;  // HEADED=1: visible window, left open for you to play
 const chrome = spawn(CHROME, [
-  "--headless=new", "--disable-gpu", `--remote-debugging-port=${PORT}`,
+  ...(HEADED ? [] : ["--headless=new", "--disable-gpu"]), `--remote-debugging-port=${PORT}`,
   `--user-data-dir=${join(tmpdir(), "emu-drive-" + PORT)}`, "--window-size=1100,1500",
   "--hide-scrollbars", "about:blank",
 ], { stdio: "ignore" });
@@ -130,5 +132,6 @@ for (const s of steps) {
   else if (s.text) console.log(await consoleText(s.text));
   else if (s.eval) console.log(await evalJs(s.eval));
 }
+if (HEADED) { console.log("Emulator is open with the app running. Press Ctrl+C here to close it."); await new Promise(() => {}); }
 chrome.kill();
 process.exit(0);
