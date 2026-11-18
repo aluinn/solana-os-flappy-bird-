@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "Solana Flappy"
+abstract: "Flappy Bird for the Solana Breakpoint 2026 badge, written in Lua for Solana OS, with the Solana coin as the bird."
+type: software
+authors:
+  - family-names: "McDonald"
+    given-names: "Aluinn"
+repository-code: "https://github.com/aluinn/solana-os-flappy-bird-"
+url: "https://github.com/aluinn/solana-os-flappy-bird-"
+license: MIT
+version: 0.1.0
+keywords:
+  - solana
+  - solana-os
+  - lua
+  - game
+  - flappy-bird
