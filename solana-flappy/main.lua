@@ -91,7 +91,7 @@ end
 local shown_score = -1
 local last_phase
 
-local function draw(ms)
+local function draw()
   -- bird: bobs on the title screen, otherwise follows the simulation
   local by = s.y
   if s.phase == "ready" then by = by + 5 * math.sin(sys.millis() / 180) end
@@ -154,7 +154,7 @@ function on_tick(ms)
     if led_ms <= 0 and led then led.off() end
   end
 
-  draw(ms)
+  draw()
 end
 
 function on_exit()
@@ -162,4 +162,4 @@ function on_exit()
 end
 
 show_title()
-draw(0)
+draw()

@@ -58,12 +58,9 @@ end
 
 local step_s = time_it(game.STEP_MS)    -- one fixed step per call
 local tick_s = time_it(30)              -- a badge tick: two fixed steps per call
-local bot_s  = 0
-do
-  local t0 = os.clock()
-  for _ = 1, N do bot() end
-  bot_s = os.clock() - t0
-end
+local bot_t0 = os.clock()
+for _ = 1, N do bot() end
+local bot_s = os.clock() - bot_t0
 
 print(_VERSION)
 print(string.format("steps per measurement:           %d", N))
