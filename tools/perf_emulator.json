@@ -1,0 +1,11 @@
+[
+  {"wait": 1000},
+  {"text": 160},
+  {"key": "Enter"},
+  {"repeat": 40, "steps": [{"wait": 450}, {"key": "Enter"}]},
+  {"console": "open home"},
+  {"wait": 800},
+  {"console": "lua mem"},
+  {"wait": 300},
+  {"text": 500}
+]

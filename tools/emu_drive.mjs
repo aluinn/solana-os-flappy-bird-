@@ -12,6 +12,7 @@
 //   {"console": "lua list"}             run a console command
 //   {"shot": "docs/assets/x.png", "what": "screen" | "badge"}
 //   {"text": 800}                       print the last N chars of the console log
+//   {"repeat": 30, "steps": [ ... ]}    run the inner steps N times
 //   {"eval": "document.title"}          run JS in the page and print the result
 // The app in ./solana-flappy is installed first unless NO_INSTALL=1.
 // HEADED=1 node tools/emu_drive.mjs   opens a visible window to play in.
@@ -129,14 +130,18 @@ const consoleText = (n) => evalJs(`document.querySelector('#emu-cmd').closest('d
 
 const steps = process.argv[2] ? JSON.parse(readFileSync(process.argv[2], "utf8")) : [];
 if (!process.env.NO_INSTALL) { await install(); await consoleCmd(`lua run ${APP_ID}`); await sleep(1500); }
-for (const s of steps) {
-  if (s.wait) await sleep(s.wait);
-  else if (s.key) await press(s.key, s.hold);
-  else if (s.console) await consoleCmd(s.console);
-  else if (s.shot) await shot(s.shot, s.what || "screen");
-  else if (s.text) console.log(await consoleText(s.text));
-  else if (s.eval) console.log(await evalJs(s.eval));
+async function run(list) {
+  for (const s of list) {
+    if (s.repeat) for (let i = 0; i < s.repeat; i++) await run(s.steps);
+    else if (s.wait) await sleep(s.wait);
+    else if (s.key) await press(s.key, s.hold);
+    else if (s.console) await consoleCmd(s.console);
+    else if (s.shot) await shot(s.shot, s.what || "screen");
+    else if (s.text) console.log(await consoleText(s.text));
+    else if (s.eval) console.log(await evalJs(s.eval));
+  }
 }
+await run(steps);
 if (HEADED) { console.log("Emulator is open with the app running. Press Ctrl+C here to close it."); await new Promise(() => {}); }
 chrome.kill();
 process.exit(0);
