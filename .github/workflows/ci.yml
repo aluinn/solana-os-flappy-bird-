@@ -1,0 +1,74 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Lint, test and sanity checks
+    runs-on: ubuntu-latest
+    env:
+      LUA_VERSION: "5.5.1"
+      # SHA-256 of lua-5.5.1.tar.gz as published at https://www.lua.org/ftp/
+      LUA_SHA256: "1c4b4068d67061f2a2231ad2b5422e77acea1487ea9890f6320af614f4373dce"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      # Solana OS runs Lua 5.5, so the tests run on 5.5 as well. Build it from the
+      # official source and refuse a tarball that doesn't match the published hash.
+      - name: Build Lua ${{ env.LUA_VERSION }}
+        run: |
+          curl -fsSLO "https://www.lua.org/ftp/lua-${LUA_VERSION}.tar.gz"
+          echo "${LUA_SHA256}  lua-${LUA_VERSION}.tar.gz" | sha256sum -c -
+          tar xzf "lua-${LUA_VERSION}.tar.gz"
+          make -C "lua-${LUA_VERSION}" linux -j"$(nproc)"
+          echo "$PWD/lua-${LUA_VERSION}/src" >> "$GITHUB_PATH"
+
+      - name: Lua version
+        run: lua -v
+
+      # luacheck's own code does not run on Lua 5.5 yet; the distro package brings
+      # its own older Lua, which is fine because luacheck parses our code itself.
+      - name: Install luacheck
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lua-check
+          luacheck --version
+
+      - name: Lint (luacheck)
+        run: luacheck solana-flappy tests tools
+
+      - name: Unit tests
+        run: lua tests/run.lua
+
+      - name: Smoke test of main.lua
+        run: lua tests/smoke_main.lua
+
+      - name: Benchmark script still runs
+        run: lua tools/bench_logic.lua 100000
+
+      - name: Tool scripts parse
+        run: |
+          node --check tools/emu_drive.mjs
+          python3 -m py_compile tools/make_sprite.py
+          sh -n tools/package_sd.sh
+
+      - name: App manifest and scenario files are valid JSON
+        run: |
+          python3 -c "import json; m = json.load(open('solana-flappy/app.json')); assert 3 <= len(m['id']) <= 24 and len(m['name']) <= 20, m"
+          python3 -c "import json; json.load(open('tools/perf_emulator.json'))"
+
+      - name: microSD layout
+        run: |
+          mkdir -p "$RUNNER_TEMP/card"
+          tools/package_sd.sh "$RUNNER_TEMP/card"
+          card="$RUNNER_TEMP/card/hh/apps/solana-flappy"
+          test -f "$card/main.lua"
+          test -f "$card/app.json"
+          test -f "$card/files/lib/game.lua"
+          test -f "$card/files/art/coin.png"
