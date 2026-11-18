@@ -4,7 +4,7 @@
 
 ## How I checked it
 
-- [ ] `lua tests/run.lua` passes
+- [ ] `lua tests/run.lua` and `lua tests/smoke_main.lua` pass
 - [ ] `luacheck solana-flappy tests tools` is clean
 - [ ] I played it in the emulator (`HEADED=1 node tools/emu_drive.mjs`) and it works
 - [ ] Screenshot attached, if the look or feel changed

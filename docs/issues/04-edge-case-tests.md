@@ -5,7 +5,7 @@ labels: ["good first issue"]
 
 ## Context
 
-The core rules (physics, collision, scoring) have tests in `tests/`. Several behaviours that are easy to break are still untested.
+The core rules (physics, collision, scoring) have tests in `tests/run.lua`. Several behaviours that are easy to break are still untested.
 
 ## Task
 
@@ -16,7 +16,7 @@ Add test cases to `tests/run.lua` (or a new file it loads) for:
 3. **Restart delay.** In the `dead` phase, `game.flap(s)` returns `false` and does nothing until `RESTART_DELAY_MS` has passed, then starts a fresh run with score 0.
 4. **Ceiling.** Flapping at the top never kills the bird and holds `y` at `BIRD_R`.
 5. **Recycling.** After many steps there are always `NPIPES` pipes, spaced `SPACING` apart, and every gap has `GAP_MARGIN <= gap_y <= PLAY_H - GAP_MARGIN - GAP`.
-6. **Score once.** Each pipe adds exactly 1 to the score, even over many steps.
+6. **Event flags.** `ev_flap`, `ev_score` and `ev_die` stay set until the caller clears them, and the game never clears them itself (`main.lua` relies on this).
 
 Pass a seeded or fixed `rand` function to `game.new(rand)` so the tests are deterministic.
 

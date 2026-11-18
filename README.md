@@ -97,6 +97,10 @@ The badge needs Solana OS **0.5.0 or later**. The layout is documented in Solana
 |---|---|
 | `HEADED=1 node tools/emu_drive.mjs` | Open the emulator in a visible Chrome and play |
 | `node tools/emu_drive.mjs script.json` | Run a scripted session and save screenshots (steps are listed in the file's header) |
+| `lua tests/run.lua` | Unit tests for the game logic |
+| `lua tests/smoke_main.lua` | Run `main.lua` against a stubbed badge API |
+| `luacheck solana-flappy tests tools` | Lint (see [CONTRIBUTING](CONTRIBUTING.md) for the Lua-version note) |
+| `lua tools/bench_logic.lua` | Benchmark the game logic; results in [PERFORMANCE.md](docs/PERFORMANCE.md) |
 | `tools/package_sd.sh [card path]` | Lay the app out for the microSD card |
 | `python3 tools/make_sprite.py <img_logomark_40.c>` | Rebuild `solana-flappy/art/coin.png` from Solana OS's `main/assets/img_logomark_40.c` |
 

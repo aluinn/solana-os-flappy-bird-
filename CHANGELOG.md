@@ -15,6 +15,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Solana coin sprite generated from the Solana OS logomark by `tools/make_sprite.py`, with a gold-disc fallback.
 - `tools/emu_drive.mjs` to install, run and screenshot the app in the hosted emulator (Node built-ins and Chrome only).
 - `tools/package_sd.sh` to lay the app out for a microSD card.
+- 23 unit tests for the game logic and a smoke test of `main.lua` against stubbed badge APIs.
+- luacheck configuration that keeps badge APIs out of `lib/game.lua`.
+- CI on GitHub Actions: luacheck, both test files and sanity checks on the tools, with Dependabot for the workflow's actions.
+- `docs/ARCHITECTURE.md`, `docs/PERFORMANCE.md` (measured numbers) and nine issue drafts in `docs/issues/`.
 - README with real emulator screenshots, plus the licence, contributing guide, code of conduct, security policy, citation file, roadmap and issue and PR templates.
 
 [Unreleased]: https://github.com/aluinn/solana-os-flappy-bird-/commits/main

@@ -18,9 +18,11 @@ You need:
 | Google Chrome | the driver controls it | installed |
 | Python 3 | sprite generation (`tools/make_sprite.py`) | `python3 -V` |
 | Lua 5.5 | running the tests | `lua -v` should say 5.5 |
-| luacheck | linting | `luacheck --version` |
+| luacheck | linting | `luacheck --version` (see the note below) |
 
 Nothing needs `npm install` or `pip install`: the Node and Python scripts use only their standard libraries.
+
+**luacheck and Lua versions.** The tests must run on Lua 5.5, which is what the badge uses. luacheck 1.2.0 itself does not run on Lua 5.5 yet (it assigns to a `for` variable, which 5.5 forbids), so install it on an older Lua: for example `sudo apt install lua-check` on Debian or Ubuntu, or LuaRocks with a Lua 5.4. It still checks our code correctly, because it uses its own parser. CI does exactly this.
 
 ```sh
 git clone https://github.com/aluinn/solana-os-flappy-bird-.git
@@ -35,14 +37,16 @@ HEADED=1 node tools/emu_drive.mjs     # play it in the hosted emulator
 | `HEADED=1 node tools/emu_drive.mjs` | Install and run the app in a visible emulator window |
 | `node tools/emu_drive.mjs script.json` | Scripted session with screenshots (see the file header) |
 | `tools/package_sd.sh [card path]` | Lay the app out for a microSD card |
-| `lua tests/run.lua` | Run the unit tests for the game logic |
+| `lua tests/run.lua` | Unit tests for the game logic (physics, collision, scoring) |
+| `lua tests/smoke_main.lua` | Runs `main.lua` against a stubbed badge API |
 | `luacheck solana-flappy tests tools` | Lint the Lua |
+| `lua tools/bench_logic.lua` | Benchmark the game logic (see `docs/PERFORMANCE.md`) |
 
 ## Where things live
 
 - `solana-flappy/lib/game.lua`: game rules. **No badge API in here**, so it stays testable under plain Lua. Keep it that way.
 - `solana-flappy/main.lua`: drawing, input, LEDs and storage.
-- `tests/`: tests for `lib/game.lua`.
+- `tests/`: `run.lua` tests `lib/game.lua`; `smoke_main.lua` runs `main.lua` against stand-ins for the badge API.
 - `docs/ARCHITECTURE.md`: how the pieces fit and why.
 
 ## Writing badge Lua
@@ -80,7 +84,7 @@ Scopes in use: `app`, `game`, `art`, `tools`, `assets`. Keep commits small and f
 ## Pull requests
 
 - One idea per PR, and say what and why in the description.
-- Run `lua tests/run.lua` and `luacheck` before pushing. CI runs both.
+- Run the tests and `luacheck` before pushing. CI runs `luacheck`, both test files and a few sanity checks.
 - Changed how it looks or plays? **Try it in the emulator** and attach a screenshot.
 - Changed game rules in `lib/game.lua`? Add or update a test.
 - Update [`CHANGELOG.md`](CHANGELOG.md) under "Unreleased" for anything a player or developer would notice.
