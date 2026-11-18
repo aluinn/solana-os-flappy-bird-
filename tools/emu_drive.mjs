@@ -4,7 +4,7 @@
 // Uses only Node's built-ins (global WebSocket, fetch) and an installed Chrome
 // through the DevTools protocol: no npm packages.
 //
-//   node tools/emu_drive.mjs <script.json>
+//   node tools/emu_drive.mjs [script.json]
 //
 // A script is a JSON array of steps:
 //   {"wait": 1500}                      sleep, ms
@@ -14,7 +14,7 @@
 //   {"text": 800}                       print the last N chars of the console log
 //   {"eval": "document.title"}          run JS in the page and print the result
 // The app in ./solana-flappy is installed first unless NO_INSTALL=1.
-// HEADED=1 node tools/emu_drive.mjs <(echo '[]')   opens a visible window to play in.
+// HEADED=1 node tools/emu_drive.mjs   opens a visible window to play in.
 
 import { spawn } from "node:child_process";
 import { readFileSync, readdirSync, statSync, writeFileSync, mkdirSync } from "node:fs";
@@ -122,7 +122,7 @@ async function shot(path, what) {
 
 const consoleText = (n) => evalJs(`document.querySelector('#emu-cmd').closest('details').querySelector('pre').innerText.slice(-${n})`);
 
-const steps = JSON.parse(readFileSync(process.argv[2], "utf8"));
+const steps = process.argv[2] ? JSON.parse(readFileSync(process.argv[2], "utf8")) : [];
 if (!process.env.NO_INSTALL) { await install(); await consoleCmd(`lua run ${APP_ID}`); await sleep(1500); }
 for (const s of steps) {
   if (s.wait) await sleep(s.wait);
