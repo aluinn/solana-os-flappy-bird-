@@ -5,7 +5,7 @@ labels: ["enhancement"]
 
 ## Context
 
-Every run uses the same numbers: gap 68 px, speed 100 px/s, gravity 1100 px/s². The first feel-test of the game will probably say "too hard" or "too easy" depending on who plays. Levels solve that and make the best score more meaningful.
+Every run uses the same numbers: gap 84 px, speed 100 px/s, gravity 1100 px/s². The first feel-test of the game will probably say "too hard" or "too easy" depending on who plays. Levels solve that and make the best score more meaningful.
 
 ## Task
 

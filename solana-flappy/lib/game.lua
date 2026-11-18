@@ -22,7 +22,7 @@ M.MAX_FALL = 420        -- px/s terminal velocity
 
 -- Pipes
 M.PIPE_W = 36
-M.GAP = 68
+M.GAP = 84
 M.GAP_MARGIN = 24       -- the gap never gets closer than this to the ceiling or ground
 M.SPACING = 150         -- px between consecutive pipes
 M.SPEED = 100           -- px/s

@@ -146,7 +146,7 @@ flowchart TD
 | More than 128 UI objects | `ui.*` calls raise an error | The game makes 21, created once at launch |
 | Score overflows 32 bits | Would wrap | Unreachable in practice: it would take about 2 billion pipes |
 | The emulator page is reloaded | The best score is lost | The emulator's SD card is in memory; a real badge keeps it |
-| Two consecutive gaps are too far apart to reach | Unavoidable death | Gap centres are random and independent, so some pairs are harder than others. The largest vertical jump is 74 px over 1.5 s. I haven't proved every sequence passable; the evidence is that a simple autopilot cleared 398 pipes in a row with one random seed |
+| Two consecutive gaps are too far apart to reach | Unavoidable death | Gap centres are random and independent, so some pairs are harder than others. The largest vertical jump is 58 px over 1.5 s. I haven't proved every sequence passable; the evidence is that a simple autopilot cleared 398 pipes in a row with one random seed |
 | Pipes and score in the same step | The score can tick in the step where you die | Scoring runs before collision in `step()`. Harmless, but worth knowing |
 
 ## What is not covered
